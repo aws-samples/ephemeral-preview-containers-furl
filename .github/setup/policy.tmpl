@@ -1,0 +1,104 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:*"
+			],
+			"Resource": [
+				"${Bucket}",
+				"${Bucket}/*"
+			]
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ecr:CreateRepository",
+				"ecr:DescribeRepositories",
+				"ecr:GetAuthorizationToken"
+			],
+			"Resource": "*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ecr:BatchCheckLayerAvailability",
+				"ecr:BatchGetImage",
+				"ecr:CompleteLayerUpload",
+				"ecr:DeleteRepository",
+				"ecr:GetRepositoryPolicy",
+				"ecr:InitiateLayerUpload",
+				"ecr:ListTagsForResource",
+				"ecr:PutImage",
+				"ecr:SetRepositoryPolicy",
+				"ecr:UploadLayerPart"
+			],
+			"Resource": "arn:aws:ecr:${Region}:${Account}:repository/${Name}*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"iam:CreatePolicy",
+				"iam:DeletePolicy",
+				"iam:GetPolicy",
+				"iam:GetPolicyVersion",
+				"iam:ListPolicyVersions"
+			],
+			"Resource": "arn:aws:iam::${Account}:policy/${Name}*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"iam:AttachRolePolicy",
+				"iam:CreateRole",
+				"iam:DeleteRole",
+				"iam:DetachRolePolicy",
+				"iam:GetRole",
+				"iam:ListAttachedRolePolicies",
+				"iam:ListInstanceProfilesForRole",
+				"iam:ListRolePolicies",
+				"iam:PassRole"
+			],
+			"Resource": "arn:aws:iam::${Account}:role/${Name}*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"kms:CreateGrant",
+				"kms:DescribeKey",
+				"kms:GenerateDataKey"
+			],
+			"Resource": "arn:aws:kms:${Region}:${Account}:key/${Name}*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"lambda:AddPermission",
+				"lambda:CreateFunction",
+				"lambda:CreateFunctionUrlConfig",
+				"lambda:DeleteFunction",
+				"lambda:DeleteFunctionUrlConfig",
+				"lambda:GetFunction",
+				"lambda:GetFunctionUrlConfig",
+				"lambda:ListVersionsByFunction",
+				"lambda:UpdateFunctionCode"
+			],
+			"Resource": "arn:aws:lambda:${Region}:${Account}:function:${Name}*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"logs:CreateLogGroup",
+				"logs:DeleteLogGroup",
+				"logs:DescribeLogGroups",
+				"logs:ListTagsLogGroup"
+			],
+			"Resource": [
+				"arn:aws:logs:${Region}:${Account}:log-group:${Name}*",
+				"arn:aws:logs:${Region}:${Account}:log-group:/aws/lambda/${Name}*",
+				"arn:aws:logs:${Region}:${Account}:log-group::log-stream:*"
+			]
+		}
+	]
+}

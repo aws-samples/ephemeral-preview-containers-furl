@@ -1,0 +1,59 @@
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  down:
+    name: Destroy ephemeral environment
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Source Configuration
+        working-directory: ./.github/workflows
+        run: |
+          # make input envvars available to all steps
+          source config.env
+          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_ENV
+          echo "AWS_ROLE=${AWS_ROLE}" >> $GITHUB_ENV
+          echo "TF_BACKEND_S3_BUCKET=${TF_BACKEND_S3_BUCKET}" >> $GITHUB_ENV
+          environment=${GITHUB_HEAD_REF##*/}
+          echo "ENVIRONMENT=${environment}" >> $GITHUB_ENV
+
+      - name: Assume AWS IAM Role
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE }}
+
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.9
+
+      - name: Dispose of ephemeral environment
+        working-directory: ./.github/workflows
+        run: |
+          terraform init \
+            -backend-config="bucket=${TF_BACKEND_S3_BUCKET}" \
+            -backend-config="key=${ENVIRONMENT}.tfstate"
+
+          terraform destroy -auto-approve \
+            -var="name=${{ github.event.repository.name }}" \
+            -var="environment=${ENVIRONMENT}" \
+            -var="image_tag=${GITHUB_SHA}"
+
+      - name: Add PR comment
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: PR environment successfully destroyed
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: "github-actions[bot]"
+          allow-repeats: false
