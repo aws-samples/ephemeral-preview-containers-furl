@@ -1,6 +1,6 @@
 # ephemeral-preview-containers-furl
 
-This repo contains sample code for the [Ephemeral Preview Web Environments using Containerized Lambda Function URLs]() blog post.
+This repo contains sample code for the [Previewing environments using containerized AWS Lambda functions](https://aws.amazon.com/blogs/compute/previewing-environments-using-containerized-aws-lambda-functions/) blog post.
 
 In the post we describe some of the benefits of using ephemeral environments in CI/CD pipelines in general and show how to implement a pipeline using GitHub Actions and AWS Lambda Function URLs for extremely fast, low-cost, ephemeral environments.  In this example, every PR can be deployed in seconds, and we pay only for actual HTTP requests made to the environment.  There are no compute costs incurred while a PR is open and no one is previewing the environment.  We only pay for Lambda invocations while stakeholders are actively interacting with the environment.  When a PR is eventually merged or closed, the cloud infrastructure is completely disposed of.
 
