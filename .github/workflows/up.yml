@@ -40,7 +40,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Lambda-ify
-        run: echo "COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.4.1 /lambda-adapter /opt/extensions/lambda-adapter" >> Dockerfile
+        run: echo "COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.7.1 /lambda-adapter /opt/extensions/lambda-adapter" >> Dockerfile
 
       - name: Deploy to ephemeral environment 
         id: furl
@@ -67,4 +67,5 @@ jobs:
 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: "github-actions[bot]"
-          allow-repeats: false
+          allow-repeats: true
+

@@ -42,7 +42,7 @@ module "terraform_state_s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.0"
 
-  bucket = "tf-state-${data.aws_caller_identity.current.account_id}"
+  bucket = "tf-state-${var.github_repo}-${data.aws_caller_identity.current.account_id}"
 
   attach_deny_insecure_transport_policy = true
   attach_require_latest_tls_policy      = true
@@ -70,3 +70,4 @@ module "terraform_state_s3_bucket" {
     }
   }
 }
+
