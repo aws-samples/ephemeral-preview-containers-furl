@@ -28,7 +28,7 @@ jobs:
           echo "ENVIRONMENT=${environment}" >> $GITHUB_ENV
 
       - name: Assume AWS IAM Role
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.AWS_ROLE }}
