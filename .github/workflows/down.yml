@@ -2,8 +2,6 @@ on:
   pull_request:
     branches: [main]
     types: [closed]
-  push:
-    branches: [main]
 
 jobs:
   down:
