@@ -32,7 +32,8 @@ jobs:
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.AWS_ROLE }}
-
+          audience: sts.amazonaws.com
+          
       - name: Install Terraform CLI
         uses: hashicorp/setup-terraform@v2
         with:
